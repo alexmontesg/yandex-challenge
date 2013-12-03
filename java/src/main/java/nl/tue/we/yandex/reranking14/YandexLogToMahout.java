@@ -15,38 +15,21 @@ public class YandexLogToMahout {
 	private static String currentUID;
 	private static Map<String, Integer> currentSessionScore;
 	private static FileWriter fw;
+	
+	private YandexLogToMahout(){}
 
-	public static void main(String[] args) {
-		if (args.length != 2) {
-			System.err.println("You must specify input and "
-					+ "output file as parameters");
-			System.exit(-1);
-			return;
-		}
-		try {
-			new YandexLogToMahout().convert(args[0], args[1]);
-		} catch (FileNotFoundException e) {
-			System.err.println("File " + args[0] + " not found");
-			System.exit(-1);
-		} catch (IOException e) {
-			System.err.println("Error reading " + args[0]);
-			System.err.println(e.getMessage());
-			System.exit(-1);
-		}
-	}
-
-	public void convert(String inputFile, String outputFile) throws IOException {
+	public static void convert(String inputFile, String outputFile) throws IOException {
 		BufferedReader br = openStreams(inputFile, outputFile);
 		readFile(br);
 		closeStreams(br);
 	}
 
-	private void closeStreams(BufferedReader br) throws IOException {
+	private static void closeStreams(BufferedReader br) throws IOException {
 		fw.close();
 		br.close();
 	}
 
-	private BufferedReader openStreams(String inputFile, String outputFile)
+	private static BufferedReader openStreams(String inputFile, String outputFile)
 			throws FileNotFoundException, IOException {
 		InputStream fis = new FileInputStream(inputFile);
 		BufferedReader br = new BufferedReader(new InputStreamReader(fis,
@@ -55,7 +38,7 @@ public class YandexLogToMahout {
 		return br;
 	}
 
-	private void readFile(BufferedReader br) throws IOException {
+	private static void readFile(BufferedReader br) throws IOException {
 		String lastLine = "";
 		while (br.ready()) {
 			String line = br.readLine();
@@ -69,7 +52,7 @@ public class YandexLogToMahout {
 		writeCurrentSessionScore();
 	}
 
-	private void parseLine(String line, String lastLine) throws IOException {
+	private static void parseLine(String line, String lastLine) throws IOException {
 		String[] fields = line.split("\t");
 		String[] lastFields = lastLine.split("\t");
 		if (isMetadata(fields)) {
@@ -81,14 +64,14 @@ public class YandexLogToMahout {
 		}
 	}
 
-	private void parseClick(String[] fields, String[] lastFields) {
+	private static void parseClick(String[] fields, String[] lastFields) {
 		if (isClick(lastFields)) {
 			int value = evaluateLastClickRelevance(fields, lastFields);
 			currentSessionScore.put(lastFields[4], value);
 		}
 	}
 
-	private void parseQuery(String[] fields, String[] lastFields) {
+	private static void parseQuery(String[] fields, String[] lastFields) {
 		if (isClick(lastFields)) {
 			int value = evaluateLastClickRelevance(fields, lastFields);
 			currentSessionScore.put(lastFields[4], value);
@@ -101,7 +84,7 @@ public class YandexLogToMahout {
 		}
 	}
 
-	private int evaluateLastClickRelevance(String[] fields, String[] lastFields) {
+	private static int evaluateLastClickRelevance(String[] fields, String[] lastFields) {
 		int timeSpentInLastClick = Integer.parseInt(fields[1].trim())
 				- Integer.parseInt(lastFields[1].trim());
 		int value = 2;
@@ -113,7 +96,7 @@ public class YandexLogToMahout {
 		return value;
 	}
 
-	private void parseMetadata(String[] fields, String[] lastFields) throws IOException {
+	private static void parseMetadata(String[] fields, String[] lastFields) throws IOException {
 		if (isClick(lastFields)) {
 			currentSessionScore.put(lastFields[4], 2);
 		}
@@ -124,17 +107,17 @@ public class YandexLogToMahout {
 		currentUID = fields[3].trim();
 	}
 
-	private void writeCurrentSessionScore() throws IOException {
+	private static void writeCurrentSessionScore() throws IOException {
 		for(Map.Entry<String, Integer> entry : currentSessionScore.entrySet()) {
 			fw.write(currentUID + "\t" + entry.getKey() + "\t" + entry.getValue() + "\n");
 		}
 	}
 	
-	private boolean isMetadata(String[] fields) {
+	private static boolean isMetadata(String[] fields) {
 		return fields.length == 4;
 	}
 
-	private boolean isClick(String[] fields) {
+	private static boolean isClick(String[] fields) {
 		return fields.length == 5;
 	}
 
