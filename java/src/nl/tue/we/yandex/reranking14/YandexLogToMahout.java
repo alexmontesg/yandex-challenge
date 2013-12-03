@@ -62,6 +62,10 @@ public class YandexLogToMahout {
 			parseLine(line, lastLine);
 			lastLine = line;
 		}
+		String[] lastFields = lastLine.split("\t");
+		if(isClick(lastFields)) {
+			currentSessionScore.put(lastFields[4], 2);
+		}
 		writeCurrentSessionScore();
 	}
 
