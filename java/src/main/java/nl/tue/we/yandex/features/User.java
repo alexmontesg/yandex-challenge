@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class User {
     
-    private List<Session> sessions;
+    private List<JudgedSession> sessions;
     
     public User(){
         this.sessions = new ArrayList<>();
