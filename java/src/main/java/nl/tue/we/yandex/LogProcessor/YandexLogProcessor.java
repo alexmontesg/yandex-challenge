@@ -67,7 +67,7 @@ public abstract class YandexLogProcessor {
     protected static boolean isQuery(String[] fields) {
         return fields.length > 5;
     }
-    
+
     protected List<Integer> readSerp(final String[] fields) throws NumberFormatException {
         final List<Integer> urls = new ArrayList<>();
         for (int i = 6; i < 16; i++) {

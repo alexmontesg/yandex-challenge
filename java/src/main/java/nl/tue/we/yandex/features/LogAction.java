@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.tue.we.yandex.features;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.Objects;
  * @author t-jukise
  */
 public class LogAction {
-    
+
     private final JudgedPair label;
     private final List<Feature> features;
 
@@ -57,9 +56,4 @@ public class LogAction {
     public List<Feature> getFeatures() {
         return new ArrayList<>(features);
     }
-    
-    
-    
-    
-    
 }

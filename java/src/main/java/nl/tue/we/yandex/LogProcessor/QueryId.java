@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.tue.we.yandex.LogProcessor;
 
 /**
@@ -11,7 +10,8 @@ package nl.tue.we.yandex.LogProcessor;
  * @author t-jukise
  */
 public class QueryId {
-    private int queryId;
+
+    private final int queryId;
 
     public QueryId(int queryId) {
         this.queryId = queryId;
@@ -48,5 +48,4 @@ public class QueryId {
         return "QueryId{" + "queryId=" + queryId + '}';
     }
 
-    
 }

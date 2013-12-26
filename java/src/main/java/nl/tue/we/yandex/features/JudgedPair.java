@@ -11,6 +11,7 @@ package nl.tue.we.yandex.features;
  * @author t-jukise
  */
 public class JudgedPair {
+    
     private final int queryId;
     private final int urlId;
     private final int domainId;

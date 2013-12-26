@@ -13,8 +13,8 @@ import java.util.Objects;
  * @author t-jukise
  */
 public class Feature {
-    private String name;
-    private float value;
+    private final String name;
+    private final float value;
 
     public Feature(String name, float value) {
         this.name = name;

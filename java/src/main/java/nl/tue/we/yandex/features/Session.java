@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.tue.we.yandex.features;
 
 import java.util.Objects;
@@ -15,7 +14,7 @@ import nl.tue.we.yandex.LogProcessor.QueryRequest;
  * @author t-jukise
  */
 public class Session {
-    
+
     private final QueryClicks clicks;
     private final QueryRequest queries;
 
@@ -49,7 +48,5 @@ public class Session {
         }
         return true;
     }
-    
-    
-    
+
 }

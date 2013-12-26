@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.tue.we.yandex.features;
 
 import java.util.ArrayList;
@@ -15,19 +14,20 @@ import java.util.Objects;
  * @author t-jukise
  */
 public class JudgedSession {
-  private final List<LogAction> session;
-  
-  public JudgedSession(){
-      this.session = new ArrayList<>();
-  }
-  
-  public void addJudge(final LogAction logAction){
-      this.session.add(logAction);
-  }
 
-  public List<LogAction> getLogActions() {
-      return new ArrayList<>(session);
-  }
+    private final List<LogAction> session;
+
+    public JudgedSession() {
+        this.session = new ArrayList<>();
+    }
+
+    public void addJudge(final LogAction logAction) {
+        this.session.add(logAction);
+    }
+
+    public List<LogAction> getLogActions() {
+        return new ArrayList<>(session);
+    }
 
     @Override
     public int hashCode() {
@@ -50,7 +50,4 @@ public class JudgedSession {
         }
         return true;
     }
-
-  
-    
 }

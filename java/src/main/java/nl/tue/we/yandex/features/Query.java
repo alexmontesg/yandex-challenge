@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.tue.we.yandex.features;
 
 import java.util.LinkedList;
@@ -15,10 +14,11 @@ import java.util.Objects;
  * @author t-jukise
  */
 public class Query {
-    private int queryId;
-    private List<Integer> terms;
-    
-    public Query(int queryId, List<Integer> terms){
+
+    private final int queryId;
+    private final List<Integer> terms;
+
+    public Query(int queryId, List<Integer> terms) {
         this.queryId = queryId;
         this.terms = terms;
     }
@@ -61,5 +61,4 @@ public class Query {
     public List<Integer> getTerms() {
         return new LinkedList<>(terms);
     }
-    
 }
