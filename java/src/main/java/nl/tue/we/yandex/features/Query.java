@@ -6,6 +6,7 @@
 
 package nl.tue.we.yandex.features;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,6 +53,13 @@ public class Query {
         }
         return true;
     }
-    
+
+    public int getQueryId() {
+        return queryId;
+    }
+
+    public List<Integer> getTerms() {
+        return new LinkedList<>(terms);
+    }
     
 }

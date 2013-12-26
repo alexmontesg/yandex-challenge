@@ -12,21 +12,21 @@ import java.util.List;
  *
  * @author t-jukise
  */
-public class QueryReformulation extends Query{
+public class Query2IssuedTime extends Query{
     
     private static final float SIM_THRESHOLD = (float) 0.35;
     private int timeIssued;
     
-    public QueryReformulation(int queryId, List<Integer> terms) {
+    public Query2IssuedTime(int queryId, List<Integer> terms) {
         super(queryId, terms);
     }
-    public QueryReformulation(int queryId, List<Integer> terms, int timeIssued) {
+    public Query2IssuedTime(int queryId, List<Integer> terms, int timeIssued) {
         super(queryId, terms);
         this.timeIssued = timeIssued;
     }
-    
+     
     //for now just next query
-    public boolean isReformulation (final QueryReformulation q2){
+    public boolean isReformulation (final Query q2){
      boolean reformulation = false;
      int denominator;
      int inCommon = 0;
@@ -71,7 +71,7 @@ public class QueryReformulation extends Query{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final QueryReformulation other = (QueryReformulation) obj;
+        final Query2IssuedTime other = (Query2IssuedTime) obj;
         if (this.timeIssued != other.timeIssued) {
             return false;
         }
