@@ -10,10 +10,7 @@ package nl.tue.we.yandex.features;
  *
  * @author t-jukise
  */
-public class FeatureProcessorLine {
+public class FeatureProcessorSession {
     
-    static int getQueryLength(final String queryTerms){
-        return queryTerms.split(",").length;
-    }
     
 }
