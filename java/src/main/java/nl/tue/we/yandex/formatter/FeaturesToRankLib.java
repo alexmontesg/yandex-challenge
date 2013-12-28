@@ -11,6 +11,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import nl.tue.we.yandex.features.Feature;
+import nl.tue.we.yandex.features.JudgedPair;
 import nl.tue.we.yandex.features.LogAction;
 
 /**
@@ -42,17 +43,17 @@ public class FeaturesToRankLib {
 			featureMap.put(knownFeatures.indexOf(featureName),
 					feature.getValue());
 		}
-		String line = buildLine(logAction.getLabel().getQueryId(), featureMap,
+		String line = buildLine(logAction.getLabel(), featureMap,
 				new TreeSet<Integer>(featureMap.keySet()));
 		return line;
 	}
 
-	private String buildLine(int queryId, Map<Integer, Float> featureMap,
+	private String buildLine(JudgedPair pair, Map<Integer, Float> featureMap,
 			SortedSet<Integer> orderedKeys) {
 		StringBuilder strb = new StringBuilder();
-		// TODO Append number in front
+		strb.append(pair.getJudge());
 		strb.append(" qid:");
-		strb.append(queryId);
+		strb.append(pair.getQueryId());
 		for (Integer key : orderedKeys) {
 			strb.append(" ");
 			strb.append(key);
