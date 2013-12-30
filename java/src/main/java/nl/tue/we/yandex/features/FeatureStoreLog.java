@@ -7,11 +7,7 @@ package nl.tue.we.yandex.features;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import nl.tue.we.yandex.LogProcessor.QueryId;
 import nl.tue.we.yandex.LogProcessor.YandexLogProcessor;
 
@@ -27,7 +23,9 @@ public class FeatureStoreLog extends YandexLogProcessor {
     private final Map<QueryId, Map<Integer, Integer>> query2Urls = new HashMap<QueryId, Map<Integer, Integer>>();
     private final Map<QueryId, Map<Integer, Integer>> query2PositionInSession = new HashMap<QueryId, Map<Integer, Integer>>();
     private final Map<QueryId, Map<Integer, Integer>> query2ClickedPosition = new HashMap<QueryId, Map<Integer, Integer>>();
-
+    private final Map<QueryId, Float> query2ProbReform = new HashMap<>();
+    private final Map<QueryId, Integer> query2Reformulation = new HashMap<>()
+;
     //private final Map<QueryId, Map<Integer, Integer>> query2domains = new HashMap<QueryId, Map<Integer, Integer>>();
     //temp storages make  sure it's empties when new session comes
     private Map<Integer, List<Integer>> serpId2ListClickedUrls = new HashMap<Integer, List<Integer>>();
@@ -53,6 +51,8 @@ public class FeatureStoreLog extends YandexLogProcessor {
             features.add(queryClickDomainEntropy);
             final Feature queryCtr = new Feature("query_ctr", calculateQueryCTR(queryId));
             features.add(queryCtr);
+            calculateAvg(query2Reformulation);
+            final Feature refProb = new Feature("query_ref_prob", query2ProbReform.get(queryId));
             query2Features.put(queryId, features);
         }
         return null;
@@ -62,11 +62,14 @@ public class FeatureStoreLog extends YandexLogProcessor {
     @Override
     protected void parseLine(String line, String lastLine) throws IOException {
         final String[] fields = line.split("\t");
+        Query prevQuery = null ;
+        Query currentQuery = null;
         currentSessionId = Integer.parseInt(fields[0]);
         if (currentSessionId != lastSessionId) {
             pushSessionToStorage();
             lastSessionId = currentSessionId;
             positionQueryInSession = 0;
+            prevQuery = null;
         }
         if (isQuery(fields)) {
             int serpId = Integer.parseInt(fields[3]);
@@ -77,11 +80,21 @@ public class FeatureStoreLog extends YandexLogProcessor {
             updateMapQueryId2Freq(queryId, query2Freq);
             final List<Integer> urls = readSerp(fields);
             serpId2ShowedUrls.put(serpId, urls);
+            final List<Integer> currentTerms = new LinkedList<>();
+            currentQuery = new Query(queryId, currentTerms);
+            for(String elem: fields[4].split(",")){
+                currentTerms.add(Integer.parseInt(elem));
+            }
+            if(prevQuery!= null && Query2IssuedTime.isQueriesSimilar(prevQuery.getTerms(), currentQuery.getTerms())){
+                updateMapQueryId2Freq(queryId, query2Reformulation);
+            }
         } else if (isClick(fields)) {
             int serpId = Integer.parseInt(fields[3]);
             int urlId = Integer.parseInt(fields[4]);
             updateMap2List(serpId, urlId, serpId2ListClickedUrls);
         }
+        prevQuery = currentQuery;
+        lastSessionId = currentSessionId;
     }
 
     private void pushSessionToStorage() {
@@ -222,6 +235,16 @@ public class FeatureStoreLog extends YandexLogProcessor {
             clicks = clicks + value;
         }
         return (float) clicks / freq;
+    }
+
+    private void calculateAvg(final Map<QueryId, Integer> query2Reformulation) {
+        int numberreformulations = 0;
+        for(QueryId queryId: query2Reformulation.keySet()){
+            numberreformulations = numberreformulations+ query2Reformulation.get(queryId);
+        }
+        for(QueryId queryId: query2Reformulation.keySet()){
+            query2ProbReform.put(queryId, (float) query2Reformulation.get(queryId)/numberreformulations);
+        }
     }
 
 }

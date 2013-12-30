@@ -5,7 +5,7 @@
  */
 package nl.tue.we.yandex.features;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +36,7 @@ public class FeatureProcessorSession extends YandexLogProcessor {
             final QueryId queryId = new QueryId(Integer.parseInt(fields[4]));
             final List<Integer> urls = readSerp(fields);
             serpIs2showedUlrs.put(serpId, urls);
-
+            
         } else if (isClick(fields)) {
             int serpId = Integer.parseInt(fields[3]);
             int urlId = Integer.parseInt(fields[4]);

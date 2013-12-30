@@ -8,6 +8,7 @@ package nl.tue.we.yandex.features;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import nl.tue.we.yandex.LogProcessor.QueryId;
 
 /**
  *
@@ -15,10 +16,13 @@ import java.util.Objects;
  */
 public class Query {
 
-    private final int queryId;
-    private final List<Integer> terms;
+    private QueryId queryId;
+    private List<Integer> terms;
 
-    public Query(int queryId, List<Integer> terms) {
+    public Query() {
+    }
+    
+    public Query(QueryId queryId, List<Integer> terms) {
         this.queryId = queryId;
         this.terms = terms;
     }
@@ -31,7 +35,7 @@ public class Query {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 43 * hash + this.queryId;
+        hash = 43 * hash + Objects.hashCode(this.queryId);
         hash = 43 * hash + Objects.hashCode(this.terms);
         return hash;
     }
@@ -54,8 +58,8 @@ public class Query {
         return true;
     }
 
-    public int getQueryId() {
-        return queryId;
+    public QueryId getQueryId() {
+        return new QueryId(queryId);
     }
 
     public List<Integer> getTerms() {
