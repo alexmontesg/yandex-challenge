@@ -82,4 +82,4 @@ if __name__ == "__main__":
 	f = gzip.open('train.gz', 'rb')
 	sp = parse_users(f)
 	sessions = [sp.__next__() for i in range(100)]
-	print (sessions)
+	print (sessions[0])
