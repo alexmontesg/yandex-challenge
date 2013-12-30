@@ -17,6 +17,10 @@ public class QueryId {
         this.queryId = queryId;
     }
 
+    public QueryId(final QueryId queryId) {
+        this.queryId = queryId.getQueryId();
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;

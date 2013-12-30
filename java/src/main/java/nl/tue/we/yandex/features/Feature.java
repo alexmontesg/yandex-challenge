@@ -16,7 +16,15 @@ public class Feature {
     private final String name;
     private final float value;
 
-    public Feature(String name, float value) {
+    public String getName() {
+		return name;
+	}
+
+	public float getValue() {
+		return value;
+	}
+
+	public Feature(String name, float value) {
         this.name = name;
         this.value = value;
     }
