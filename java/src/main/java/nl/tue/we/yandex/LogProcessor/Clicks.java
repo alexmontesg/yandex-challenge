@@ -5,6 +5,7 @@
  */
 package nl.tue.we.yandex.LogProcessor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,24 @@ import java.util.Objects;
  *
  * @author t-jukise
  */
-public class QueryClicks {
+public class Clicks {
 
-    private final Map<Integer, List<Integer>> serpId2ClickedUrl = new HashMap<>();
+    private Map<Integer, List<Integer>> serpId2ClickedUrl = new HashMap<>();
 
-    public QueryClicks() {
+    public Clicks() {
+    }
+
+    public Clicks(Clicks clicks) {
+        serpId2ClickedUrl = clicks.getSerpId2ClickedUrl();
+    }
+    
+    public void updateClicks (int serpId, int clickedUrlId){
+       List<Integer> clickedUrls = serpId2ClickedUrl.get(serpId);
+        if(clickedUrls == null){
+            clickedUrls = new ArrayList<>();
+        }
+        clickedUrls.add(clickedUrlId);
+        serpId2ClickedUrl.put(serpId, clickedUrls);
     }
 
     @Override
@@ -36,7 +50,7 @@ public class QueryClicks {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final QueryClicks other = (QueryClicks) obj;
+        final Clicks other = (Clicks) obj;
         if (!Objects.equals(this.serpId2ClickedUrl, other.serpId2ClickedUrl)) {
             return false;
         }

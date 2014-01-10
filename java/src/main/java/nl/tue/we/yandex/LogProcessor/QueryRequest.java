@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import nl.tue.we.yandex.features.Query;
 /**
  *
  * @author t-jukise
@@ -19,17 +20,10 @@ public class QueryRequest {
     private final Map<Integer,List<Integer>> serpId2ShowedUrls = new HashMap<>();
     private final Query query;
 
+
     public QueryRequest(final Query query, final Integer serpId, final List<Integer> urls) {
         this.query = query;
         serpId2ShowedUrls.put(serpId, urls);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.serpId2ShowedUrls);
-        hash = 29 * hash + Objects.hashCode(this.query);
-        return hash;
     }
 
     @Override
@@ -49,4 +43,28 @@ public class QueryRequest {
         }
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.serpId2ShowedUrls);
+        hash = 89 * hash + Objects.hashCode(this.query);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "QueryRequest{" + "serpId2ShowedUrls=" + serpId2ShowedUrls + ", query=" + query + '}';
+    }
+
+    public Query getQuery() {
+        return new Query(query);
+    }
+
+    public Map<Integer, List<Integer>> getSerpId2ShowedUrls() {
+        return serpId2ShowedUrls;
+    }
+    
+    
+   
 }

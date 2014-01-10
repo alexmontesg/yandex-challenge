@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +28,21 @@ public abstract class YandexLogProcessor {
 	protected static FileWriter fw;
 	protected final Map<Integer, Integer> urls2domains = new HashMap<Integer, Integer>();
 
-	public void convert(String inputFile, String outputFile) throws IOException {
+	public void convertInputToOutput(String inputFile, String outputFile) throws IOException {
 		BufferedReader br = openStreams(inputFile, outputFile);
 		readFile(br);
 		closeStreams(br);
 	}
+        
+        protected void readFile(final BufferedReader br) throws IOException {
+		String lastLine = "";
+		while (br.ready()) {
+			final String line = br.readLine();
+			parseLine(line, lastLine);
+			lastLine = line;
+		}
+	}
+
 
 	private static void closeStreams(BufferedReader br) throws IOException {
 		fw.close();
@@ -47,15 +58,7 @@ public abstract class YandexLogProcessor {
 		return br;
 	}
 
-	protected void readFile(final BufferedReader br) throws IOException {
-		String lastLine = "";
-		while (br.ready()) {
-			final String line = br.readLine();
-			parseLine(line, lastLine);
-			lastLine = line;
-		}
-	}
-
+	
 	protected static boolean isMetadata(String[] fields) {
 		return fields.length == 4;
 	}
@@ -79,6 +82,17 @@ public abstract class YandexLogProcessor {
 			urls2domains.put(url, domain);
 		}
 		return urls;
+	}
+        
+        protected List<Term> readQueryTerms(final String[] fields)
+			throws NumberFormatException {
+		final List<Term> terms = new LinkedList<>();
+                String[] termsStrings = fields[5].split(",");
+                for (String termString : termsStrings){
+                    final Term term = new Term(Integer.valueOf(termString));
+                    terms.add(term);
+                }
+		return terms;
 	}
 
 	protected abstract void parseLine(String line, String lastLine)
