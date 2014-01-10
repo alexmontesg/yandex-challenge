@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package nl.tue.we.yandex.features;
 
 import java.util.Objects;
@@ -13,20 +12,15 @@ import java.util.Objects;
  * @author t-jukise
  */
 public class Feature {
+
+    private final int featureId;
     private final String name;
     private final float value;
 
-    public String getName() {
-		return name;
-	}
-
-	public float getValue() {
-		return value;
-	}
-
-	public Feature(String name, float value) {
+    public Feature(String name, float value, int featureId) {
         this.name = name;
         this.value = value;
+        this.featureId = featureId;
     }
 
     @Override
@@ -54,5 +48,18 @@ public class Feature {
         }
         return true;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
+    public int getFeatureId() {
+        return featureId;
+    }
+    
     
 }

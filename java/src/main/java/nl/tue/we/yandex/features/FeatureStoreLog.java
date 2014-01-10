@@ -5,7 +5,6 @@
  */
 package nl.tue.we.yandex.features;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 import nl.tue.we.yandex.LogProcessor.QueryId;
@@ -24,8 +23,8 @@ public class FeatureStoreLog extends YandexLogProcessor {
     private final Map<QueryId, Map<Integer, Integer>> query2PositionInSession = new HashMap<QueryId, Map<Integer, Integer>>();
     private final Map<QueryId, Map<Integer, Integer>> query2ClickedPosition = new HashMap<QueryId, Map<Integer, Integer>>();
     private final Map<QueryId, Float> query2ProbReform = new HashMap<>();
-    private final Map<QueryId, Integer> query2Reformulation = new HashMap<>()
-;
+    private final Map<QueryId, Integer> query2Reformulation = new HashMap<>();
+
     //private final Map<QueryId, Map<Integer, Integer>> query2domains = new HashMap<QueryId, Map<Integer, Integer>>();
     //temp storages make  sure it's empties when new session comes
     private Map<Integer, List<Integer>> serpId2ListClickedUrls = new HashMap<Integer, List<Integer>>();
@@ -41,21 +40,22 @@ public class FeatureStoreLog extends YandexLogProcessor {
         final Map<QueryId, List<Feature>> query2Features = new HashMap<>();
         for (final QueryId queryId : query2Freq.keySet()) {
             final List<Feature> features = new LinkedList<>();
-            final Feature queryFreq = new Feature("query_freq", (float) query2Freq.get(queryId) / AMOUNT_QUERIES);
+            final Feature queryFreq = new Feature("query_freq", (float) query2Freq.get(queryId) / AMOUNT_QUERIES, 1);
             features.add(queryFreq);
-            final Feature queryPositionInSession = new Feature("query_position_session", getAvgMap(query2PositionInSession.get(queryId)));
+            final Feature queryPositionInSession = new Feature("query_position_session", getAvgMap(query2PositionInSession.get(queryId)), 2);
             features.add(queryPositionInSession);
-            final Feature queryClickUrlEntropy = new Feature("query_click_url_entropy", calculateQueryClickUrlEntropy(query2Urls.get(queryId)));
+            final Feature queryClickUrlEntropy = new Feature("query_click_url_entropy", calculateQueryClickUrlEntropy(query2Urls.get(queryId)),3);
             features.add(queryClickUrlEntropy);
-            final Feature queryClickDomainEntropy = new Feature("query_click_url_entropy", calculateQueryClickDomainEntropy(query2Urls.get(queryId)));
+            final Feature queryClickDomainEntropy = new Feature("query_click_url_entropy", calculateQueryClickDomainEntropy(query2Urls.get(queryId)),4);
             features.add(queryClickDomainEntropy);
-            final Feature queryCtr = new Feature("query_ctr", calculateQueryCTR(queryId));
+            final Feature queryCtr = new Feature("query_ctr", calculateQueryCTR(queryId), 5);
             features.add(queryCtr);
             calculateAvg(query2Reformulation);
-            final Feature refProb = new Feature("query_ref_prob", query2ProbReform.get(queryId));
+            final Feature refProb = new Feature("query_ref_prob", query2ProbReform.get(queryId),6);
+            features.add(refProb);
             query2Features.put(queryId, features);
         }
-        return null;
+        return query2Features;
     }
    
 
@@ -81,7 +81,7 @@ public class FeatureStoreLog extends YandexLogProcessor {
             final List<Integer> urls = readSerp(fields);
             serpId2ShowedUrls.put(serpId, urls);
             final List<Integer> currentTerms = new LinkedList<>();
-            currentQuery = new Query(queryId, currentTerms);
+            currentQuery = new Query(queryId, currentTerms,0);
             for(String elem: fields[4].split(",")){
                 currentTerms.add(Integer.parseInt(elem));
             }

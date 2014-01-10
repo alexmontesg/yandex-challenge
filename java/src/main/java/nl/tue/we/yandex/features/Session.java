@@ -5,20 +5,21 @@
  */
 package nl.tue.we.yandex.features;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
-import nl.tue.we.yandex.LogProcessor.QueryClicks;
+import nl.tue.we.yandex.LogProcessor.Clicks;
 import nl.tue.we.yandex.LogProcessor.QueryRequest;
-
 /**
  *
  * @author t-jukise
  */
 public class Session {
 
-    private final QueryClicks clicks;
-    private final QueryRequest queries;
+    private final Clicks clicks;
+    private final List<QueryRequest> queries;
 
-    public Session(QueryClicks clicks, QueryRequest queries) {
+    public Session(final List<QueryRequest> queries, final Clicks clicks) {
         this.clicks = clicks;
         this.queries = queries;
     }
@@ -47,6 +48,14 @@ public class Session {
             return false;
         }
         return true;
+    }
+
+    public Clicks getClicks() {
+        return new Clicks(clicks);
+    }
+
+    public List<QueryRequest> getQueries() {
+        return new LinkedList<>(queries);
     }
 
 }
