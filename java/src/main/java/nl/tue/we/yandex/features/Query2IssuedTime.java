@@ -9,6 +9,7 @@ package nl.tue.we.yandex.features;
 import java.util.List;
 import nl.tue.we.yandex.LogProcessor.QueryId;
 import nl.tue.we.yandex.LogProcessor.Term;
+import nl.tue.we.yandex.LogProcessor.Query;;
 
 /**
  *

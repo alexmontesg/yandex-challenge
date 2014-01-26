@@ -15,10 +15,10 @@ import java.util.Objects;
  */
 public class LogAction {
 
-    private final JudgedPair label;
+    private final LabeledDocumentQueryPair label;
     private final List<Feature> features;
 
-    public LogAction(final JudgedPair label, final List<Feature> features) {
+    public LogAction(final LabeledDocumentQueryPair label, final List<Feature> features) {
         this.label = label;
         this.features = features;
     }
@@ -49,8 +49,8 @@ public class LogAction {
         return true;
     }
 
-    public JudgedPair getLabel() {
-        return new JudgedPair(label);
+    public LabeledDocumentQueryPair getLabel() {
+        return new LabeledDocumentQueryPair(label);
     }
 
     public List<Feature> getFeatures() {

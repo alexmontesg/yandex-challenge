@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.*;
 import nl.tue.we.yandex.LogProcessor.QueryId;
 import nl.tue.we.yandex.LogProcessor.YandexLogProcessor;
+import nl.tue.we.yandex.LogProcessor.Query;
 
 /**
  *
